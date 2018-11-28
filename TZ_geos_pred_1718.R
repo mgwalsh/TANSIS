@@ -17,9 +17,9 @@ suppressPackageStartupMessages({
 })
 
 # Data setup --------------------------------------------------------------
-# Run this first: https://github.com/mgwalsh/Geosurvey/blob/master/TZ_GS_data.R
+# Run this first: https://github.com/mgwalsh/TANSIS/blob/master/TZ_geos_data_1718.R
 # or run ...
-# SourceURL <- "https://raw.githubusercontent.com/mgwalsh/blob/master/TZ_GS_data.R"
+# SourceURL <- "https://raw.githubusercontent.com/mgwalsh/blob/master/TZ_geos_data_1718.R"
 # source_url(SourceURL)
 rm(list=setdiff(ls(), c("gsdat","grids","glist"))) ## scrub extraneous objects in memory
 
