@@ -28,19 +28,19 @@ seed <- 12358
 set.seed(seed)
 
 # split data into calibration and validation sets
-gsIndex <- createDataPartition(gsdat$BP, p = 4/5, list = F, times = 1)
+gsIndex <- createDataPartition(gsdat$CP, p = 4/5, list = F, times = 1)
 gs_cal <- gsdat[ gsIndex,]
 gs_val <- gsdat[-gsIndex,]
 
 # GeoSurvey calibration labels
-cp_cal <- gs_cal$BP
+cp_cal <- gs_cal$CP
 
 # raster calibration features
-gf_cal <- gs_cal[,18:62]
+gf_cal <- gs_cal[,12:56]
 
 # Central place theory model <glm> -----------------------------------------
 # select central place covariates
-gf_cpv <- gs_cal[,27:37]
+gf_cpv <- gs_cal[,21:31]
 
 # start doParallel to parallelize model fitting
 mc <- makeCluster(detectCores())
@@ -53,7 +53,7 @@ tc <- trainControl(method = "cv", classProbs = T,
 
 # model training
 gl1 <- train(gf_cpv, cp_cal, 
-             method = "glmStepAIC",
+             method = "glmnet",
              family = "binomial",
              preProc = c("center","scale"), 
              trControl = tc,
