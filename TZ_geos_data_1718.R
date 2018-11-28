@@ -2,11 +2,10 @@
 # M. Walsh, November 2018
 
 # Required packages
-# install.packages(c("downloader","rgdal","jsonlite","raster","leaflet","htmlwidgets","wordcloud")), dependencies=TRUE)
+# install.packages(c("downloader","rgdal","raster","leaflet","htmlwidgets","wordcloud")), dependencies=TRUE)
 suppressPackageStartupMessages({
   require(downloader)
   require(rgdal)
-  require(jsonlite)
   require(raster)
   require(leaflet)
   require(htmlwidgets)
@@ -15,8 +14,8 @@ suppressPackageStartupMessages({
 
 # Data downloads -----------------------------------------------------------
 # set working directory
-dir.create("TZ_1718", showWarnings = F)
-setwd("./TZ_1718")
+dir.create("TZ_geos_1718", showWarnings = F)
+setwd("./TZ_geos_1718")
 
 # download GeoSurvey data
 # see sampling frame @ https://github.com/mgwalsh/Sampling/blob/master/TZ_GS_sample.R
