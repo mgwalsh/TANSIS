@@ -245,7 +245,7 @@ write.csv(gsout, "./Results/TZ_CP_out.csv", row.names = F) ## ... change feature
 pred <- 1-st.pred ## GeoSurvey ensemble probability
 pal <- colorBin("Greens", domain = 0:1) ## set color palette
 w <- leaflet() %>% 
-  setView(lng = mean(gsdat$lon), lat = mean(gsdat$lat), zoom = 8) %>%
+  setView(lng = mean(gsdat$lon), lat = mean(gsdat$lat), zoom = 6) %>%
   addProviderTiles(providers$OpenStreetMap.Mapnik) %>%
   addRasterImage(pred, colors = pal, opacity = 0.3, maxBytes=6000000) %>%
   addLegend(pal = pal, values = values(pred), title = "Cropland prob.")
