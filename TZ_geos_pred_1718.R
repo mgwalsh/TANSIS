@@ -53,7 +53,7 @@ tc <- trainControl(method = "cv", classProbs = T,
 
 # model training
 gl1 <- train(gf_cpv, cp_cal, 
-             method = "glmnet",
+             method = "glmStepAIC",
              family = "binomial",
              preProc = c("center","scale"), 
              trControl = tc,
@@ -185,8 +185,8 @@ gspred <- extract(preds, gs_val)
 gspred <- as.data.frame(cbind(gs_val, gspred))
 
 # stacking model validation labels and features
-cp_val <- gspred$CP ## change this to $BP, $CP, $WP or $BIC
-gf_val <- gspred[,53:57] ## subset validation features
+cp_val <- gspred$CP ## change this to $BP, $WP or $BIC
+gf_val <- gspred[,57:61] ## subset validation features
 
 # Model stacking ----------------------------------------------------------
 # start doParallel to parallelize model fitting
@@ -200,7 +200,7 @@ tc <- trainControl(method = "cv", classProbs = T,
 
 # model training
 st <- train(gf_val, cp_val,
-            method = "glmnet",
+            method = "glm",
             family = "binomial",
             metric = "ROC",
             trControl = tc)
@@ -230,9 +230,9 @@ plot(mask, axes=F)
 # Write prediction grids --------------------------------------------------
 gspreds <- stack(preds, 1-st.pred, mask)
 names(gspreds) <- c("gl1","gl2","rf","gb","nn","st","mk")
-writeRaster(gspreds, filename="./Results/TZ_cppreds_2017.tif", datatype="FLT4S", options="INTERLEAVE=BAND", overwrite=T)
+writeRaster(gspreds, filename="./Results/TZ_cppreds_1718.tif", datatype="FLT4S", options="INTERLEAVE=BAND", overwrite=T)
 
 # Write output data frame -------------------------------------------------
 gspre <- extract(gspreds, gsdat)
 gsout <- as.data.frame(cbind(gsdat, gspre))
-write.csv(gsout, "./Results/TZ_gsout.csv", row.names = F)
+write.csv(gsout, "./Results/TZ_gsout_1718.csv", row.names = F)
