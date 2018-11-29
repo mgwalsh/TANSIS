@@ -2,7 +2,7 @@
 # M. Walsh, November 2018
 
 # Required packages
-# install.packages(c("devtools","caret","MASS","randomForest","gbm","nnet","glmnet","plyr","doParallel","dismo")), dependencies=T)
+# install.packages(c("devtools","caret","MASS","randomForest","gbm","nnet","plyr","doParallel","dismo")), dependencies=T)
 suppressPackageStartupMessages({
   require(devtools)
   require(caret)
@@ -10,7 +10,6 @@ suppressPackageStartupMessages({
   require(randomForest)
   require(gbm)
   require(nnet)
-  require(glmnet)
   require(plyr)
   require(doParallel)
   require(dismo)
