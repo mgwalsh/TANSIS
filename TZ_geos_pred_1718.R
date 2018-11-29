@@ -233,6 +233,21 @@ names(gspreds) <- c("gl1","gl2","rf","gb","nn","st","mk")
 writeRaster(gspreds, filename="./Results/TZ_cppreds_1718.tif", datatype="FLT4S", options="INTERLEAVE=BAND", overwrite=T)
 
 # Write output data frame -------------------------------------------------
+coordinates(gsdat) <- ~x+y
+projection(gsdat) <- projection(grids)
 gspre <- extract(gspreds, gsdat)
 gsout <- as.data.frame(cbind(gsdat, gspre))
-write.csv(gsout, "./Results/TZ_gsout_1718.csv", row.names = F)
+gsout$mzone <- ifelse(gsout$mk == 1, "Y", "N")
+confusionMatrix(data = gsout$mzone, reference = gsout$CP, positive = "Y")
+write.csv(gsout, "./Results/TZ_CP_out.csv", row.names = F) ## ... change feature names here if needed
+
+# Prediction map widget ---------------------------------------------------
+pred <- 1-st.pred ## GeoSurvey ensemble probability
+pal <- colorBin("Greens", domain = 0:1) ## set color palette
+w <- leaflet() %>% 
+  setView(lng = mean(gsdat$lon), lat = mean(gsdat$lat), zoom = 8) %>%
+  addProviderTiles(providers$OpenStreetMap.Mapnik) %>%
+  addRasterImage(pred, colors = pal, opacity = 0.3, maxBytes=6000000) %>%
+  addLegend(pal = pal, values = values(pred), title = "Cropland prob.")
+w ## plot widget 
+saveWidget(w, 'TZ_CP_prob.html', selfcontained = T) ## save html ... change feature names here
