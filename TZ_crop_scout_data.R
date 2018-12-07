@@ -54,7 +54,7 @@ projection(mobs) <- projection(grids)
 mobsgrid <- extract(grids, mobs)
 msdat <- as.data.frame(cbind(mobs, mobsgrid)) 
 # msdat <- msdat[!duplicated(msdat), ] ## removes any duplicates ... if needed
-# msdat <- msdat[complete.cases(msdat[ ,c(4:88)]),] ## removes incomplete cases
+msdat <- msdat[complete.cases(msdat[ ,c(4:88)]),] ## removes incomplete cases
 # msdat <- msdat[ which(msdat$CP=='Y'), ] ## selects croplands only
 
 # Write data frame --------------------------------------------------------
