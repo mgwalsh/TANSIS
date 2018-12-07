@@ -68,3 +68,9 @@ w <- leaflet() %>%
   addCircleMarkers(msdat$lon, msdat$lat, clusterOptions = markerClusterOptions())
 w ## plot widget 
 saveWidget(w, 'TZ_crop_scout_2018.html', selfcontained = T) ## save widget
+
+# MobileSurvey contributions ----------------------------------------------
+mscon <- as.data.frame(table(msdat$observer))
+set.seed(1235813)
+wordcloud(mscon$Var1, freq = mscon$Freq, scale = c(2,0.1), random.order = T)
+
