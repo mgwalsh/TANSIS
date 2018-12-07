@@ -59,7 +59,7 @@ msdat <- as.data.frame(cbind(mobs, mobsgrid))
 
 # Write data frame --------------------------------------------------------
 dir.create("Results", showWarnings = F)
-write.csv(msdat, "./Results/TZ_msdat_2018.csv", row.names = F)
+write.csv(msdat, "./Results/TZ_crop_scout_2018.csv", row.names = F)
 
 # GeoSurvey map widget ----------------------------------------------------
 w <- leaflet() %>%
@@ -67,4 +67,4 @@ w <- leaflet() %>%
   addProviderTiles(providers$OpenStreetMap.Mapnik) %>%
   addCircleMarkers(msdat$lon, msdat$lat, clusterOptions = markerClusterOptions())
 w ## plot widget 
-saveWidget(w, 'TZ_mobs_2018.html', selfcontained = T) ## save widget
+saveWidget(w, 'TZ_crop_scout_2018.html', selfcontained = T) ## save widget
