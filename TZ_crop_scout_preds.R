@@ -1,5 +1,5 @@
 # Stacked predictions of Tanzania "Crop scout" observations
-# This example is for "Maize distribution" predictions
+# This example is for "Maize distribution" predictions based on ground observations
 # M. Walsh, December 2018
 
 # Required packages
