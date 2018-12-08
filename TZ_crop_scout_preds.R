@@ -1,5 +1,6 @@
 # Stacked predictions of Tanzania "Crop scout" observations
-# This example is for "Maize distribution" predictions based on field observations
+# This example is tuned "Maize distribution" predictions based on field observations,
+# but can also be applied to other crops enumerated in Crop scout datasets.
 # M. Walsh, December 2018
 
 # Required packages
