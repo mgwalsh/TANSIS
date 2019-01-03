@@ -246,7 +246,7 @@ pal <- colorBin("Reds", domain = 0:1) ## set color palette
 w <- leaflet() %>% 
   setView(lng = mean(gsdat$lon), lat = mean(gsdat$lat), zoom = 6) %>%
   addProviderTiles(providers$OpenStreetMap.Mapnik) %>%
-  addRasterImage(pred, colors = pal, opacity = 0.3, maxBytes=6000000) %>%
+  addRasterImage(pred, colors = pal, opacity = 0.6, maxBytes=6000000) %>%
   addLegend(pal = pal, values = values(pred), title = "Settlement prob.")
 w ## plot widget 
-saveWidget(w, 'TZ_BP_prob.html', selfcontained = T) ## save html ... change feature names here
+saveWidget(w, 'TZ_BP_1718.html', selfcontained = T) ## save html ... change feature names here
