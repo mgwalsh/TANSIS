@@ -35,7 +35,7 @@ gs_val <- gsdat[-gsIndex,]
 cp_cal <- gs_cal$BP
 
 # raster calibration features
-gf_cal <- gs_cal[,12:56]
+gf_cal <- gs_cal[,12:57]
 
 # Central place theory model <glm> -----------------------------------------
 # select central place covariates
