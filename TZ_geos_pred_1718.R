@@ -174,7 +174,7 @@ stopCluster(mc)
 
 # Model stacking setup ----------------------------------------------------
 preds <- stack(1-gl1.pred, 1-gl2.pred, 1-rf.pred, 1-gb.pred, 1-nn.pred)
-names(preds) <- c("gl1","gl2","rf", "gb","nn")
+names(preds) <- c("gl1","gl2","rf","gb","nn")
 plot(preds, axes = F)
 
 # extract model predictions
@@ -185,7 +185,7 @@ gspred <- as.data.frame(cbind(gs_val, gspred))
 
 # stacking model validation labels and features
 cp_val <- gspred$BP ## change this to $CP, $WP or $BIC
-gf_val <- gspred[,57:61] ## subset validation features
+gf_val <- gspred[,58:62] ## subset validation features
 
 # Model stacking ----------------------------------------------------------
 # start doParallel to parallelize model fitting
@@ -247,6 +247,6 @@ w <- leaflet() %>%
   setView(lng = mean(gsdat$lon), lat = mean(gsdat$lat), zoom = 6) %>%
   addProviderTiles(providers$OpenStreetMap.Mapnik) %>%
   addRasterImage(pred, colors = pal, opacity = 0.6, maxBytes=6000000) %>%
-  addLegend(pal = pal, values = values(pred), title = "Settlement prob.")
+  addLegend(pal = pal, values = values(pred), title = "Building prob.")
 w ## plot widget 
 saveWidget(w, 'TZ_BP_1718.html', selfcontained = T) ## save html ... change feature names here
