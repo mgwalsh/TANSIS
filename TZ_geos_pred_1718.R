@@ -189,7 +189,7 @@ gspred <- extract(preds, gs_val)
 gspred <- as.data.frame(cbind(gs_val, gspred))
 
 # stacking model validation labels and features
-cp_val <- gspred$CP ## change this to $CP, $WP or $BIC
+cp_val <- gspred$CP ## change this to $BP, $WP or $BIC
 gf_val <- gspred[,58:62] ## subset validation features
 
 # Model stacking ----------------------------------------------------------
@@ -216,6 +216,7 @@ st.pred <- predict(preds, st, type = "prob") ## spatial predictions
 plot(1-st.pred, axes = F)
 
 stopCluster(mc)
+saveRDS(st, "./Results/st.rds")
 
 # Receiver-operator characteristics ---------------------------------------
 cp_pre <- predict(st, gf_val, type="prob")
@@ -234,7 +235,7 @@ plot(mask, axes=F)
 # Write prediction grids --------------------------------------------------
 gspreds <- stack(preds, 1-st.pred, mask)
 names(gspreds) <- c("gl1","gl2","rf","gb","nn","st","mk")
-writeRaster(gspreds, filename="./Results/TZ_BP_preds_1718.tif", datatype="FLT4S", options="INTERLEAVE=BAND", overwrite=T)
+writeRaster(gspreds, filename="./Results/TZ_CP_preds_1718.tif", datatype="FLT4S", options="INTERLEAVE=BAND", overwrite=T)
 
 # Write output data frame -------------------------------------------------
 coordinates(gsdat) <- ~x+y
@@ -243,7 +244,7 @@ gspre <- extract(gspreds, gsdat)
 gsout <- as.data.frame(cbind(gsdat, gspre))
 gsout$mzone <- ifelse(gsout$mk == 1, "Y", "N")
 confusionMatrix(data = gsout$mzone, reference = gsout$BP, positive = "Y")
-write.csv(gsout, "./Results/TZ_BP_out.csv", row.names = F) ## ... change feature names here if needed
+write.csv(gsout, "./Results/TZ_CP_out.csv", row.names = F) ## ... change feature names here if needed
 
 # Prediction map widget ---------------------------------------------------
 pred <- 1-st.pred ## GeoSurvey ensemble probability
@@ -254,4 +255,4 @@ w <- leaflet() %>%
   addRasterImage(pred, colors = pal, opacity = 0.6, maxBytes=6000000) %>%
   addLegend(pal = pal, values = values(pred), title = "Building prob.")
 w ## plot widget 
-saveWidget(w, 'TZ_BP_1718.html', selfcontained = T) ## save html ... change feature names here
+saveWidget(w, 'TZ_CP_1718.html', selfcontained = T) ## save html ... change feature names here
