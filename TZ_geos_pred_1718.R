@@ -27,12 +27,12 @@ seed <- 12358
 set.seed(seed)
 
 # split data into calibration and validation sets
-gsIndex <- createDataPartition(gsdat$BP, p = 4/5, list = F, times = 1)
+gsIndex <- createDataPartition(gsdat$CP, p = 4/5, list = F, times = 1)
 gs_cal <- gsdat[ gsIndex,]
 gs_val <- gsdat[-gsIndex,]
 
 # GeoSurvey calibration labels
-cp_cal <- gs_cal$BP
+cp_cal <- gs_cal$CP
 
 # raster calibration features
 gf_cal <- gs_cal[,12:57]
