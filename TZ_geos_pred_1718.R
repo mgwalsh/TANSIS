@@ -64,6 +64,7 @@ print(gl1) ## ROC's accross cross-validation
 gl1.pred <- predict(grids, gl1, type = "prob") ## spatial predictions
 
 stopCluster(mc)
+saveRDS(gl1, "./Results/gl1.rds")
 
 # GLM with all covariates -------------------------------------------------
 # start doParallel to parallelize model fitting
@@ -89,6 +90,7 @@ print(gl2) ## ROC's accross cross-validation
 gl2.pred <- predict(grids, gl2, type = "prob") ## spatial predictions
 
 stopCluster(mc)
+saveRDS(gl2, "./Results/gl2.rds")
 
 # Random forest <randomForest> --------------------------------------------
 # start doParallel to parallelize model fitting
@@ -116,6 +118,7 @@ plot(varImp(rf)) ## relative variable importance
 rf.pred <- predict(grids, rf, type = "prob") ## spatial predictions
 
 stopCluster(mc)
+saveRDS(rf, "./Results/rf.rds")
 
 # Generalized boosting <gbm> ----------------------------------------------
 # start doParallel to parallelize model fitting
@@ -145,6 +148,7 @@ plot(varImp(gb)) ## relative variable importance
 gb.pred <- predict(grids, gb, type = "prob") ## spatial predictions
 
 stopCluster(mc)
+saveRDS(gb, "./Results/gb.rds")
 
 # Neural network <nnet> ---------------------------------------------------
 # start doParallel to parallelize model fitting
@@ -171,6 +175,7 @@ plot(varImp(nn)) ## relative variable importance
 nn.pred <- predict(grids, nn, type = "prob") ## spatial predictions
 
 stopCluster(mc)
+saveRDS(nn, "./Results/nn.rds")
 
 # Model stacking setup ----------------------------------------------------
 preds <- stack(1-gl1.pred, 1-gl2.pred, 1-rf.pred, 1-gb.pred, 1-nn.pred)
@@ -184,7 +189,7 @@ gspred <- extract(preds, gs_val)
 gspred <- as.data.frame(cbind(gs_val, gspred))
 
 # stacking model validation labels and features
-cp_val <- gspred$BP ## change this to $CP, $WP or $BIC
+cp_val <- gspred$CP ## change this to $CP, $WP or $BIC
 gf_val <- gspred[,58:62] ## subset validation features
 
 # Model stacking ----------------------------------------------------------
