@@ -38,6 +38,7 @@ colnames(geos) <- c("region","district","ward","lat","lon","bp","cp","wp","bcoun
 # Models ------------------------------------------------------------------
 # negative binomial models
 summary(m1 <- glm.nb(ccount ~ cpred, geos))
-summary(m2 <- glm.nb(ccount ~ wp+cpred+bcount, geos))
-summary(m3 <- glm.nb(ccount ~ wp+cprob+bcount, geos))
+summary(m2 <- glm.nb(ccount ~ cprob, geos))
+summary(m3 <- glm.nb(ccount ~ wp+cpred+bcount, geos))
+summary(m4 <- glm.nb(ccount ~ wp+cprob+bcount, geos))
 
