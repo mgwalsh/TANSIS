@@ -36,7 +36,7 @@ geos <- cbind(gadm[ ,c(5,7,9)], geos)
 colnames(geos) <- c("region","district","ward","lat","lon","bp","cp","wp","bcount","ccount","cprob","cpred")
 
 # Models ------------------------------------------------------------------
-# negative binomial models
+# negative binomial models of GeoSurvey cropland grid counts
 summary(m1 <- glm.nb(ccount ~ cpred, geos))
 summary(m2 <- glm.nb(ccount ~ cprob, geos))
 summary(m3 <- glm.nb(ccount ~ wp+cpred+bcount, geos))
