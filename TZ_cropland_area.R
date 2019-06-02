@@ -54,7 +54,6 @@ m1pred <- within(m1pred, {
   UL <- exp(fit + 1.96 * se.fit)
 })
 
-ggplot(newdata2, aes(cprob, ccount)) +
-  geom_ribbon(aes(ymin = LL, ymax = UL, fill = prog), alpha = .25) +
-  geom_line(aes(colour = prog), size = 2) +
-  labs(x = "Math Score", y = "Predicted Days Absent")
+ggplot(m1pred, aes(cprob, ccount)) +
+  geom_ribbon(aes(ymin = LL, ymax = UL), alpha = .5) +
+  labs(x = "Cropland probability", y = "GeoSurvey cropland grid count")
