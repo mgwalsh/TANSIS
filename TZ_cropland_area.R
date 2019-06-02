@@ -39,6 +39,7 @@ colnames(geos) <- c("region","district","ward","lat","lon","bp","cp","wp","bcoun
 # negative binomial models of GeoSurvey cropland grid counts
 summary(m1 <- glm.nb(ccount ~ cprob, geos)) ## scaling model
 (est1 <- cbind(Estimate = coef(m1), confint(m1)))
+# geos$m1 <- predict(m1, geos)
 
 # +additional covariates
 summary(m2 <- glm.nb(ccount ~ cprob+bcount+wp, geos))
