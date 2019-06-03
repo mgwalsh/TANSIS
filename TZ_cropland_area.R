@@ -83,7 +83,7 @@ writeRaster(gspreds, filename="./Results/TZ_cp_area.tif", datatype="FLT4S", opti
 
 # Prediction map widget ---------------------------------------------------
 pred <- m1.pred/16*100 ## GeoSurvey cropland percentage
-pal <- colorBin("Greens", domain = 0:100) ## set color palette
+pal <- colorBin("Reds", domain = 0:100, na.color = "grey") ## set color palette
 w <- leaflet() %>% 
   setView(lng = mean(gsdat$lon), lat = mean(gsdat$lat), zoom = 7) %>%
   addProviderTiles(providers$OpenStreetMap.Mapnik) %>%
