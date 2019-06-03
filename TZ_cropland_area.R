@@ -88,6 +88,6 @@ w <- leaflet() %>%
   setView(lng = mean(gsdat$lon), lat = mean(gsdat$lat), zoom = 7) %>%
   addProviderTiles(providers$OpenStreetMap.Mapnik) %>%
   addRasterImage(pred, colors = pal, opacity = 0.6, maxBytes=6000000) %>%
-  addLegend(pal = pal, values = values(pred), title = "Cropland area %")
+  addLegend(pal = pal, values = values(pred), title = "Cropland area (%)")
 w ## plot widget 
 saveWidget(w, 'TZ_cp_area.html', selfcontained = T)
