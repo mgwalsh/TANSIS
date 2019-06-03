@@ -2,12 +2,14 @@
 # M. Walsh, June 2019
 
 # Required packages
-# install.packages(c("downloader","rgdal","raster","MASS","ggplot2")), dependencies=TRUE)
+# install.packages(c("downloader","rgdal","raster","MASS","leaflet","htmlwidgets")), dependencies=TRUE)
 suppressPackageStartupMessages({
   require(downloader)
   require(rgdal)
   require(raster)
   require(MASS)
+  require(leaflet)
+  require(htmlwidgets)
 })
 
 # Data downloads -----------------------------------------------------------
@@ -78,3 +80,14 @@ anova(m1, m2) ## model comparison
 gspreds <- stack(m1.pred, m2.pred)
 names(gspreds) <- c("m1","m2")
 writeRaster(gspreds, filename="./Results/TZ_cp_area.tif", datatype="FLT4S", options="INTERLEAVE=BAND", overwrite=T)
+
+# Prediction map widget ---------------------------------------------------
+pred <- m1.pred/16*100 ## GeoSurvey cropland percentage
+pal <- colorBin("Greens", domain = 0:100) ## set color palette
+w <- leaflet() %>% 
+  setView(lng = mean(gsdat$lon), lat = mean(gsdat$lat), zoom = 7) %>%
+  addProviderTiles(providers$OpenStreetMap.Mapnik) %>%
+  addRasterImage(pred, colors = pal, opacity = 0.6, maxBytes=6000000) %>%
+  addLegend(pal = pal, values = values(pred), title = "Cropland area %")
+w ## plot widget 
+saveWidget(w, 'TZ_cp_area.html', selfcontained = T)
