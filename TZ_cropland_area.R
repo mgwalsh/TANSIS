@@ -63,12 +63,14 @@ write.csv(gsdat, "./Results/TZ_crop_area.csv", row.names = F)
 summary(m1 <- glm.nb(ccount ~ CP18, gsdat)) ## scaling model
 (est1 <- cbind(Estimate = coef(m1), confint(m1)))
 m1.pred <- predict(grids, m1, type="response")
+plot(m1.pred, axes=F)
 gsdat$m1 <- predict(m1, gsdat, type="response")
 
 # +additional LCC covariates
 summary(m2 <- glm.nb(ccount ~ CP18+BP18+WP18, gsdat)) ## $BP18 predicted building presence, $WP18 predicted woody cover
 (est2 <- cbind(Estimate = coef(m2), confint(m2)))
 m2.pred <- predict(grids, m2, type="response")
+plot(m2.pred, axes=F)
 gsdat$m2 <- predict(m2, gsdat, type="response")
 anova(m1, m2) ## model comparison
 
