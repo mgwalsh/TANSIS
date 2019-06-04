@@ -93,3 +93,4 @@ w <- leaflet() %>%
   addLegend(pal = pal, values = values(pred), title = "Cropland area (%)")
 w ## plot widget 
 saveWidget(w, 'TZ_cp_area.html', selfcontained = T)
+
