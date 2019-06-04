@@ -12,11 +12,11 @@ suppressPackageStartupMessages({
   require(htmlwidgets)
 })
 
-# Data downloads -----------------------------------------------------------
 # set working directory
 dir.create("TZ_crop_area", showWarnings = F)
 setwd("./TZ_crop_area")
 
+# Data dow!nloads -----------------------------------------------------------
 # download GeoSurvey data
 # see sampling frame @ https://github.com/mgwalsh/Sampling/blob/master/TZ_GS_sample.R
 download("https://www.dropbox.com/s/f4ucx0mv7jqn12u/TZ_cropland_area.csv.zip?raw=1", "TZ_cropland_area.csv.zip", mode = "wb")
@@ -65,6 +65,7 @@ write.csv(gsdat, "./Results/TZ_crop_area.csv", row.names = F)
 summary(m1 <- glm.nb(ccount ~ CP18, gsdat)) ## scaling model
 (est1 <- cbind(Estimate = coef(m1), confint(m1)))
 m1.pred <- predict(grids, m1, type="response")/16
+m1.area <- cellStats(m1.pred*6.25, sum) ## calculates total cropland area (ha)
 plot(m1.pred, axes=F)
 gsdat$m1 <- predict(m1, gsdat, type="response")
 
@@ -73,8 +74,7 @@ summary(m2 <- glm.nb(ccount ~ CP18+BP18+WP18, gsdat)) ## $BP18 predicted buildin
 (est2 <- cbind(Estimate = coef(m2), confint(m2)))
 anova(m1, m2) ## model comparison
 m2.pred <- predict(grids, m2, type="response")/16
-m2.mean <- cellStats(m2.pred, mean) ## calculates mean predicted area fraction based on m2 model
-m2.sdev <- cellStats(m2.pred, sd) ## calculates standard deviation of predicted area fraction based on m2 model
+m2.area <- cellStats(m2.pred*6.25, sum) ## calculates total cropland area (ha)
 plot(m2.pred, axes=F)
 gsdat$m2 <- predict(m2, gsdat, type="response")
 
