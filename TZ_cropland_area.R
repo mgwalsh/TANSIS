@@ -74,7 +74,7 @@ summary(m2 <- glm.nb(ccount ~ CP18+BP18+WP18, gsdat)) ## $BP18 predicted buildin
 anova(m1, m2) ## model comparison
 m2.pred <- predict(grids, m2, type="response")/16
 m2.mean <- cellStats(m2.pred, mean) ## calculates mean predicted area fraction based on m2 model
-m2.sdev <- cellStats(m2.pred, sdev) ## calculates standard deviation of predicted area fraction based on m2 model
+m2.sdev <- cellStats(m2.pred, sd) ## calculates standard deviation of predicted area fraction based on m2 model
 plot(m2.pred, axes=F)
 gsdat$m2 <- predict(m2, gsdat, type="response")
 
