@@ -64,17 +64,19 @@ write.csv(gsdat, "./Results/TZ_crop_area.csv", row.names = F)
 # negative binomial models of GeoSurvey cropland grid counts
 summary(m1 <- glm.nb(ccount ~ CP18, gsdat)) ## scaling model
 (est1 <- cbind(Estimate = coef(m1), confint(m1)))
-m1.pred <- predict(grids, m1, type="response")/16*100
+m1.pred <- predict(grids, m1, type="response")/16
 plot(m1.pred, axes=F)
 gsdat$m1 <- predict(m1, gsdat, type="response")
 
 # +additional LCC covariates
 summary(m2 <- glm.nb(ccount ~ CP18+BP18+WP18, gsdat)) ## $BP18 predicted building presence, $WP18 predicted woody cover
 (est2 <- cbind(Estimate = coef(m2), confint(m2)))
-m2.pred <- predict(grids, m2, type="response")/16*100
+anova(m1, m2) ## model comparison
+m2.pred <- predict(grids, m2, type="response")/16
+m2.mean <- cellStats(m2.pred, mean) ## calculates mean predicted area fraction based on m2 model
+m2.sdev <- cellStats(m2.pred, sdev) ## calculates standard deviation of predicted area fraction based on m2 model
 plot(m2.pred, axes=F)
 gsdat$m2 <- predict(m2, gsdat, type="response")
-anova(m1, m2) ## model comparison
 
 # Write prediction grids --------------------------------------------------
 gspreds <- stack(m1.pred, m2.pred)
@@ -82,7 +84,7 @@ names(gspreds) <- c("m1","m2")
 writeRaster(gspreds, filename="./Results/TZ_cp_area.tif", datatype="FLT4S", options="INTERLEAVE=BAND", overwrite=T)
 
 # Prediction map widget ---------------------------------------------------
-pred <- m1.pred ## GeoSurvey cropland percentage
+pred <- m2.pred*100 ## GeoSurvey cropland percentage
 pal <- colorBin("Reds", domain = 0:100, na.color = "light grey") ## set color palette
 w <- leaflet() %>% 
   setView(lng = mean(gsdat$lon), lat = mean(gsdat$lat), zoom = 7) %>%
