@@ -63,7 +63,7 @@ write.csv(gsdat, "./Results/TZ_crop_area.csv", row.names = F)
 # Models ------------------------------------------------------------------
 # negative binomial models of GeoSurvey cropland grid counts
 summary(m1 <- glm.nb(ccount ~ CP18, gsdat)) ## scaling model
-(est1 <- cbind(Estimate = coef(m1), confint(m1)))
+(est1 <- cbind(Estimate = coef(m1), confint(m1))) ## standard 95% confidence intervals
 m1.pred <- predict(grids, m1, type="response")/16
 m1.area <- cellStats(m1.pred*6.25, sum) ## calculates total cropland area (ha)
 plot(m1.pred, axes=F)
@@ -71,7 +71,7 @@ gsdat$m1 <- predict(m1, gsdat, type="response")
 
 # +additional LCC covariates
 summary(m2 <- glm.nb(ccount ~ CP18+BP18+WP18, gsdat)) ## $BP18 predicted building presence, $WP18 predicted woody cover
-(est2 <- cbind(Estimate = coef(m2), confint(m2)))
+(est2 <- cbind(Estimate = coef(m2), confint(m2))) ## standard 95% confidence intervals
 anova(m1, m2) ## model comparison
 m2.pred <- predict(grids, m2, type="response")/16
 m2.area <- cellStats(m2.pred*6.25, sum) ## calculates total cropland area (ha)
