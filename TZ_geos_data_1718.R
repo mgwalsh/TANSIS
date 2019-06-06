@@ -30,8 +30,8 @@ unzip("TZA_adm3.zip", overwrite = T)
 shape <- shapefile("TZA_adm3.shp")
 
 # download raster stack (note this is a big 1+ Gb download)
-download("https://www.dropbox.com/s/pshrtvjf7navegu/TZ_250m_2018.zip?raw=1", "TZ_250m_2018.zip", mode = "wb")
-unzip("TZ_250m_2018.zip", overwrite = T)
+download("https://www.dropbox.com/s/ejl3h62hojnhh3a/TZ_250m_2019.zip?raw=1", "TZ_250m_2019.zip", mode = "wb")
+unzip("TZ_250m_2019.zip", overwrite = T)
 glist <- list.files(pattern="tif", full.names = T)
 grids <- stack(glist)
 
@@ -55,7 +55,7 @@ projection(geos) <- projection(grids)
 geosgrid <- extract(grids, geos)
 gsdat <- as.data.frame(cbind(geos, geosgrid)) 
 # gsdat <- gsdat[!duplicated(gsdat), ] ## removes any duplicates ... if needed
-gsdat <- gsdat[complete.cases(gsdat[ ,c(8:57)]),] ## removes incomplete cases
+gsdat <- gsdat[complete.cases(gsdat[ ,c(8:63)]),] ## removes incomplete cases
 # gsdat <- gsdat[ which(gsdat$CP=='Y'), ] ## selects croplands only
 gsdat$observer <- sub("@.*", "", as.character(gsdat$observer)) ## shortens observer ID's
 
