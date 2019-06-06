@@ -17,10 +17,7 @@ suppressPackageStartupMessages({
 
 # Data setup --------------------------------------------------------------
 # Run this first: https://github.com/mgwalsh/TANSIS/blob/master/TZ_geos_data_1718.R
-# or run ...
-# SourceURL <- "https://raw.githubusercontent.com/mgwalsh/blob/master/TZ_geos_data_1718.R"
-# source_url(SourceURL)
-rm(list=setdiff(ls(), c("gsdat","grids","glist"))) ## scrub extraneous objects in memory
+rm(list=setdiff(ls(), c("gsdat","grids"))) ## scrub extraneous objects in memory
 
 # set calibration/validation set randomization seed
 seed <- 12358
@@ -35,11 +32,11 @@ gs_val <- gsdat[-gsIndex,]
 cp_cal <- gs_cal$CP
 
 # raster calibration features
-gf_cal <- gs_cal[,12:57]
+gf_cal <- gs_cal[,12:63]
 
 # Central place theory model <glm> -----------------------------------------
 # select central place covariates
-gf_cpv <- gs_cal[,21:31]
+gf_cpv <- gs_cal[,21:32]
 
 # start doParallel to parallelize model fitting
 mc <- makeCluster(detectCores())
@@ -190,7 +187,7 @@ gspred <- as.data.frame(cbind(gs_val, gspred))
 
 # stacking model validation labels and features
 cp_val <- gspred$CP ## change this to $BP, $WP or $BIC
-gf_val <- gspred[,58:62] ## subset validation features
+gf_val <- gspred[,64:68] ## subset validation features
 
 # Model stacking ----------------------------------------------------------
 # start doParallel to parallelize model fitting
