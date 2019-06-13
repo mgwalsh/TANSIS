@@ -54,7 +54,7 @@ projection(geos) <- projection(grids)
 geosgrid <- extract(grids, geos)
 gsdat <- as.data.frame(cbind(geos, geosgrid)) 
 # gsdat <- gsdat[!duplicated(gsdat), ] ## removes any duplicates ... if needed
-gsdat <- gsdat[complete.cases(gsdat[ ,c(11:13)]),] ## removes incomplete cases
+gsdat <- gsdat[complete.cases(gsdat[ ,c(1:15)]),] ## removes incomplete cases
 
 # Write data frame --------------------------------------------------------
 dir.create("Results", showWarnings = F)
