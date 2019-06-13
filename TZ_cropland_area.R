@@ -66,7 +66,7 @@ cp <-  gsdat[which(gsdat$cp=='Y'), ]
 summary(m0 <- glm.nb(ccount ~ 1, cp)) ## mean model
 (est0 <- cbind(Estimate = coef(m0), confint(m0))) ## standard 95% confidence intervals
 
-# with cropland presence prediction (CP18)
+# with cropland spatial presence prediction (CP18)
 summary(m1 <- glm.nb(ccount ~ CP18, cp)) ## scaling model
 (est1 <- cbind(Estimate = coef(m1), confint(m1))) ## standard 95% confidence intervals
 m1.pred <- predict(grids, m1, type="response")/16
