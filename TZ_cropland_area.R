@@ -67,7 +67,7 @@ summary(m0 <- glm.nb(ccount ~ 1, cp)) ## mean model
 (est0 <- cbind(Estimate = coef(m0), confint(m0))) ## standard 95% confidence intervals
 
 # with cropland presence prediction (CP18)
-summary(m1 <- glm.nb(ccount ~ CP18, gsdat)) ## scaling model
+summary(m1 <- glm.nb(ccount ~ CP18, cp)) ## scaling model
 (est1 <- cbind(Estimate = coef(m1), confint(m1))) ## standard 95% confidence intervals
 m1.pred <- predict(grids, m1, type="response")/16
 m1.area <- cellStats(m1.pred*6.25, sum) ## calculates total cropland area (ha)
@@ -75,7 +75,7 @@ plot(m1.pred, axes=F)
 gsdat$m1 <- predict(m1, gsdat, type="response")
 
 # +additional LCC covariates
-summary(m2 <- glm.nb(ccount ~ CP18+BP18+WP18, gsdat)) ## $BP18 predicted building presence, $WP18 predicted woody cover
+summary(m2 <- glm.nb(ccount ~ CP18+BP18+WP18, cp)) ## $BP18 predicted building presence, $WP18 predicted woody cover
 (est2 <- cbind(Estimate = coef(m2), confint(m2))) ## standard 95% confidence intervals
 anova(m1, m2) ## model comparison
 m2.pred <- predict(grids, m2, type="response")/16
