@@ -19,9 +19,9 @@ dir.create("TZ_mobs", showWarnings = F)
 setwd("./TZ_mobs")
 
 # download MobileSurvey data
-download("https://www.dropbox.com/s/7tpbj22s8yjvxm9/TZ_crop_scout_2018.csv.zip?raw=1", "TZ_crop_scout_2018.csv.zip", mode = "wb")
-unzip("TZ_crop_scout_2018.csv.zip", overwrite = T)
-mobs <- read.table("TZ_crop_scout_2018.csv", header = T, sep = ",")
+download("https://www.dropbox.com/s/2dbt0kefgjj5xhq/TZ_crop_scout_2019.csv.zip?raw=1", "TZ_crop_scout_2019.csv.zip", mode = "wb")
+unzip("TZ_crop_scout_2019.csv.zip", overwrite = T)
+mobs <- read.table("TZ_crop_scout_2019.csv", header = T, sep = ",")
 
 # download GADM-L3 shapefile (courtesy: http://www.gadm.org)
 download("https://www.dropbox.com/s/bhefsc8u120uqwp/TZA_adm3.zip?raw=1", "TZA_adm3.zip", mode = "wb")
@@ -29,8 +29,8 @@ unzip("TZA_adm3.zip", overwrite = T)
 shape <- shapefile("TZA_adm3.shp")
 
 # download raster stack (note this is a big 1+ Gb download)
-download("https://www.dropbox.com/s/pshrtvjf7navegu/TZ_250m_2017.zip?raw=1", "TZ_250m_2017.zip", mode = "wb")
-unzip("TZ_250m_2017.zip", overwrite = T)
+download("https://www.dropbox.com/s/ejl3h62hojnhh3a/TZ_250m_2019.zip?raw=1", "TZ_250m_2019.zip", mode = "wb")
+unzip("TZ_250m_2019.zip", overwrite = T)
 glist <- list.files(pattern="tif", full.names = T)
 grids <- stack(glist)
 
