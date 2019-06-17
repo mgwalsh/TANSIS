@@ -55,7 +55,7 @@ mobsgrid <- extract(grids, mobs)
 msdat <- as.data.frame(cbind(mobs, mobsgrid)) 
 # msdat <- msdat[!duplicated(msdat), ] ## removes any duplicates ... if needed
 msdat <- msdat[complete.cases(msdat[ ,c(39:90)]),] ## removes incomplete cases
-# msdat <- msdat[ which(msdat$CP=='Y'), ] ## selects croplands only
+msdat <- msdat[ which(msdat$CP=='Y'), ] ## selects croplands only
 
 # Write data frame --------------------------------------------------------
 dir.create("Results", showWarnings = F)
