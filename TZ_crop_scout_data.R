@@ -59,7 +59,7 @@ msdat <- msdat[complete.cases(msdat[ ,c(39:90)]),] ## removes incomplete cases
 
 # Write data frame --------------------------------------------------------
 dir.create("Results", showWarnings = F)
-write.csv(msdat, "./Results/TZ_crop_scout_2018.csv", row.names = F)
+write.csv(msdat, "./Results/TZ_crop_scout_2019.csv", row.names = F)
 
 # GeoSurvey map widget ----------------------------------------------------
 w <- leaflet() %>%
@@ -67,7 +67,7 @@ w <- leaflet() %>%
   addProviderTiles(providers$OpenStreetMap.Mapnik) %>%
   addCircleMarkers(msdat$lon, msdat$lat, clusterOptions = markerClusterOptions())
 w ## plot widget 
-saveWidget(w, 'TZ_crop_scout_2018.html', selfcontained = T) ## save widget
+saveWidget(w, 'TZ_crop_scout_2019.html', selfcontained = T) ## save widget
 
 # MobileSurvey contributions ----------------------------------------------
 mscon <- as.data.frame(table(msdat$observer))
