@@ -37,11 +37,11 @@ gs_val <- msdat[-gsIndex,]
 cp_cal <- gs_cal$maize
 
 # raster calibration features
-gf_cal <- gs_cal[,42:86]
+gf_cal <- gs_cal[,39:90]
 
 # Central place theory model <glm> -----------------------------------------
 # select central place covariates
-gf_cpv <- gs_cal[,51:61]
+gf_cpv <- gs_cal[,48:59]
 
 # start doParallel to parallelize model fitting
 mc <- makeCluster(detectCores())
@@ -66,6 +66,7 @@ print(gl1) ## ROC's accross cross-validation
 gl1.pred <- predict(grids, gl1, type = "prob") ## spatial predictions
 
 stopCluster(mc)
+saveRDS(gl1, "./Results/gl1.rds")
 
 # GLM with all covariates -------------------------------------------------
 # start doParallel to parallelize model fitting
@@ -91,6 +92,7 @@ print(gl2) ## ROC's accross cross-validation
 gl2.pred <- predict(grids, gl2, type = "prob") ## spatial predictions
 
 stopCluster(mc)
+saveRDS(gl2, "./Results/gl2.rds")
 
 # Random forest <randomForest> --------------------------------------------
 # start doParallel to parallelize model fitting
@@ -114,10 +116,10 @@ rf <- train(gf_cal, cp_cal,
 
 # model outputs & predictions
 print(rf) ## ROC's accross tuning parameters
-plot(varImp(rf)) ## relative variable importance
 rf.pred <- predict(grids, rf, type = "prob") ## spatial predictions
 
 stopCluster(mc)
+saveRDS(rf, "./Results/rf.rds")
 
 # Generalized boosting <gbm> ----------------------------------------------
 # start doParallel to parallelize model fitting
@@ -143,10 +145,10 @@ gb <- train(gf_cal, cp_cal,
 
 # model outputs & predictions
 print(gb) ## ROC's accross tuning parameters
-plot(varImp(gb)) ## relative variable importance
 gb.pred <- predict(grids, gb, type = "prob") ## spatial predictions
 
 stopCluster(mc)
+saveRDS(gb, "./Results/gb.rds")
 
 # Neural network <nnet> ---------------------------------------------------
 # start doParallel to parallelize model fitting
@@ -169,10 +171,10 @@ nn <- train(gf_cal, cp_cal,
 
 # model outputs & predictions
 print(nn) ## ROC's accross tuning parameters
-plot(varImp(nn)) ## relative variable importance
 nn.pred <- predict(grids, nn, type = "prob") ## spatial predictions
 
 stopCluster(mc)
+saveRDS(nn, "./Results/nn.rds")
 
 # Model stacking setup ----------------------------------------------------
 preds <- stack(1-gl1.pred, 1-gl2.pred, 1-rf.pred, 1-gb.pred, 1-nn.pred)
@@ -187,7 +189,7 @@ gspred <- as.data.frame(cbind(gs_val, gspred))
 
 # stacking model validation labels and features
 cp_val <- gspred$maize ## change this to other MobileSurvey variables 
-gf_val <- gspred[,87:91] ## subset validation features
+gf_val <- gspred[,91:95] ## subset validation features
 
 # Model stacking ----------------------------------------------------------
 # start doParallel to parallelize model fitting
@@ -213,6 +215,7 @@ st.pred <- predict(preds, st, type = "prob") ## spatial predictions
 plot(1-st.pred, axes = F)
 
 stopCluster(mc)
+saveRDS(st, "./Results/st.rds")
 
 # Receiver-operator characteristics ---------------------------------------
 cp_pre <- predict(st, gf_val, type="prob")
@@ -248,7 +251,7 @@ pal <- colorBin("Greens", domain = 0:1) ## set color palette
 w <- leaflet() %>% 
   setView(lng = mean(msdat$lon), lat = mean(msdat$lat), zoom = 6) %>%
   addProviderTiles(providers$OpenStreetMap.Mapnik) %>%
-  addRasterImage(pred, colors = pal, opacity = 0.3, maxBytes=6000000) %>%
+  addRasterImage(pred, colors = pal, opacity = 0.6, maxBytes=6000000) %>%
   addLegend(pal = pal, values = values(pred), title = "Maize prob.")
 w ## plot widget 
 saveWidget(w, 'TZ_maize_prob.html', selfcontained = T) ## save html ... change feature names here
