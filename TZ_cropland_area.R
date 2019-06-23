@@ -89,16 +89,15 @@ anova(m1, m2) ## model comparison
 # Multilevel binomial regressions
 # post-stratified by regions
 summary(m3 <- glmer(cbind(ccount, 16-ccount) ~ 1 + (1|region), family=binomial, gsdat))
-ran <- ranef(m3) ## extract regional random effects
-ses <- se.coef(m3) ## extract regional standard errors
-nam <- rownames(ran$region)
-par(pty="s", mar=c(10,10,1,1))
-coefplot(ran$region[,1], ses$region[,1], varnames=nam, xlim=c(-1.5,1.5), CI=2, main="") ## regional coefficient plot
 
 # +additional LCC covariates
 summary(m4 <- glmer(cbind(ccount, 16-ccount) ~ CP18+BP18+WP18 + (1|region), family=binomial, gsdat))
-(m4.ran <- ranef(m4)) ## extract random regional effects
 anova(m3, m4) ## model comparison
+ran <- ranef(m4) ## extract regional random effects
+ses <- se.coef(m4) ## extract regional standard errors
+nam <- rownames(ran$region)
+par(pty="s", mar=c(10,10,1,1))
+coefplot(ran$region[,1], ses$region[,1], varnames=nam, xlim=c(-1,1), CI=2, main="") ## regional coefficient plot
 
 # Write prediction grids --------------------------------------------------
 gspreds <- stack(m1.pred, m2.pred)
