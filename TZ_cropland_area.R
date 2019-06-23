@@ -2,7 +2,7 @@
 # M. Walsh, June 2019
 
 # Required packages
-# install.packages(c("downloader","rgdal","raster","MASS","leaflet","htmlwidgets")), dependencies=TRUE)
+# install.packages(c("downloader","rgdal","raster","MASS","arm",leaflet","htmlwidgets")), dependencies=TRUE)
 suppressPackageStartupMessages({
   require(downloader)
   require(rgdal)
