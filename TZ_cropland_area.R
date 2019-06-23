@@ -8,6 +8,7 @@ suppressPackageStartupMessages({
   require(rgdal)
   require(raster)
   require(MASS)
+  require(arm)
   require(leaflet)
   require(htmlwidgets)
 })
@@ -61,27 +62,36 @@ dir.create("Results", showWarnings = F)
 write.csv(gsdat, "./Results/TZ_crop_area.csv", row.names = F)
 
 # Models ------------------------------------------------------------------
-# negative binomial models of GeoSurvey cropland grid counts
-cp <-  gsdat[which(gsdat$cp=='Y'), ]
-summary(m0 <- glm.nb(ccount ~ 1, cp)) ## mean model
+# binomial models of GeoSurvey cropland grid counts
+# cp <-  gsdat[which(gsdat$cp=='Y'), ] ## actual cropland observations only
+summary(m0 <- glm(I(ccount/16) ~ 1, family=binomial, gsdat)) ## mean model
 (est0 <- cbind(Estimate = coef(m0), confint(m0))) ## standard 95% confidence intervals
 
 # with cropland spatial presence prediction (CP18)
-summary(m1 <- glm.nb(ccount ~ CP18, cp)) ## scaling model
+summary(m1 <- glm(I(ccount/16) ~ CP18, family=binomial, gsdat)) ## scaling model
 (est1 <- cbind(Estimate = coef(m1), confint(m1))) ## standard 95% confidence intervals
-m1.pred <- predict(grids, m1, type="response")/16
+m1.pred <- predict(grids, m1, type="response")
 m1.area <- cellStats(m1.pred*6.25, sum) ## calculates total cropland area (ha)
 plot(m1.pred, axes=F)
 gsdat$m1 <- predict(m1, gsdat, type="response")
 
 # +additional LCC covariates
-summary(m2 <- glm.nb(ccount ~ CP18+BP18+WP18, cp)) ## $BP18 predicted building presence, $WP18 predicted woody cover
+summary(m2 <- glm.nb(I(ccount/16) ~ CP18+BP18+WP18, gsdat)) ## $BP18 predicted building presence, $WP18 predicted woody cover
 (est2 <- cbind(Estimate = coef(m2), confint(m2))) ## standard 95% confidence intervals
 anova(m1, m2) ## model comparison
-m2.pred <- predict(grids, m2, type="response")/16
+m2.pred <- predict(grids, m2, type="response")
 m2.area <- cellStats(m2.pred*6.25, sum) ## calculates total cropland area (ha)
 plot(m2.pred, axes=F)
 gsdat$m2 <- predict(m2, gsdat, type="response")
+
+# Multilevel regressions
+# post-stratified by regions
+summary(m3 <- glmer(I(ccount/16) ~ 1 + (1|region), family=binomial, gsdat))
+(m3.ran <- ranef(m3))
+
+# +additional LCC covariates
+summary(m4 <- glmer(I(ccount/16) ~ CP18+BP18+WP18 + (1|region), family=binomial, gsdat))
+(m4.ran <- ranef(m4))
 
 # Write prediction grids --------------------------------------------------
 gspreds <- stack(m1.pred, m2.pred)
