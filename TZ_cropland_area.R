@@ -64,11 +64,11 @@ write.csv(gsdat, "./Results/TZ_crop_area.csv", row.names = F)
 # Models ------------------------------------------------------------------
 # binomial models of GeoSurvey cropland grid counts
 # cp <-  gsdat[which(gsdat$cp=='Y'), ] ## actual cropland observations only
-summary(m0 <- glm(I(ccount/16) ~ 1, family=binomial, gsdat)) ## mean model
+summary(m0 <- glm(cbind(ccount, 16-ccount) ~ 1, family=binomial, gsdat)) ## mean model
 (est0 <- cbind(Estimate = coef(m0), confint(m0))) ## standard 95% confidence intervals
 
 # with cropland spatial presence prediction (CP18)
-summary(m1 <- glm(I(ccount/16) ~ CP18, family=binomial, gsdat)) ## scaling model
+summary(m1 <- glm(cbind(ccount, 16-ccount) ~ CP18, family=binomial, gsdat)) ## scaling model
 (est1 <- cbind(Estimate = coef(m1), confint(m1))) ## standard 95% confidence intervals
 m1.pred <- predict(grids, m1, type="response")
 m1.area <- cellStats(m1.pred*6.25, sum) ## calculates total cropland area (ha)
@@ -76,7 +76,7 @@ plot(m1.pred, axes=F)
 gsdat$m1 <- predict(m1, gsdat, type="response")
 
 # +additional LCC covariates
-summary(m2 <- glm(I(ccount/16) ~ CP18+BP18+WP18, family=binomial, gsdat)) ## $BP18 predicted building presence, $WP18 predicted woody cover
+summary(m2 <- glm(cbind(ccount, 16-ccount) ~ CP18+BP18+WP18, family=binomial, gsdat)) ## $BP18 predicted building presence, $WP18 predicted woody cover
 (est2 <- cbind(Estimate = coef(m2), confint(m2))) ## standard 95% confidence intervals
 anova(m1, m2) ## model comparison
 m2.pred <- predict(grids, m2, type="response")
@@ -87,11 +87,11 @@ anova(m1, m2) ## model comparison
 
 # Multilevel regressions
 # post-stratified by regions
-summary(m3 <- glmer(I(ccount/16) ~ 1 + (1|region), family=binomial, gsdat))
+summary(m3 <- glmer(cbind(ccount, 16-ccount) ~ 1 + (1|region), family=binomial, gsdat))
 (m3.ran <- ranef(m3)) ## extract random regional effects
 
 # +additional LCC covariates
-summary(m4 <- glmer(I(ccount/16) ~ CP18+BP18+WP18 + (1|region), family=binomial, gsdat))
+summary(m4 <- glmer(cbind(ccount, 16-ccount) ~ CP18+BP18+WP18 + (1|region), family=binomial, gsdat))
 (m4.ran <- ranef(m4)) ## extract random regional effects
 anova(m3, m4) ## model comparison
 
