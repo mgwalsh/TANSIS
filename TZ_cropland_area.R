@@ -76,13 +76,14 @@ plot(m1.pred, axes=F)
 gsdat$m1 <- predict(m1, gsdat, type="response")
 
 # +additional LCC covariates
-summary(m2 <- glm.nb(I(ccount/16) ~ CP18+BP18+WP18, gsdat)) ## $BP18 predicted building presence, $WP18 predicted woody cover
+summary(m2 <- glm(I(ccount/16) ~ CP18+BP18+WP18, family=binomial, gsdat)) ## $BP18 predicted building presence, $WP18 predicted woody cover
 (est2 <- cbind(Estimate = coef(m2), confint(m2))) ## standard 95% confidence intervals
 anova(m1, m2) ## model comparison
 m2.pred <- predict(grids, m2, type="response")
-m2.area <- cellStats(m2.pred*6.25, sum) ## calculates total cropland area (ha)
+(m2.area <- cellStats(m2.pred*6.25, sum)) ## calculates total cropland area (ha)
 plot(m2.pred, axes=F)
 gsdat$m2 <- predict(m2, gsdat, type="response")
+anova(m1, m2)
 
 # Multilevel regressions
 # post-stratified by regions
@@ -92,6 +93,7 @@ summary(m3 <- glmer(I(ccount/16) ~ 1 + (1|region), family=binomial, gsdat))
 # +additional LCC covariates
 summary(m4 <- glmer(I(ccount/16) ~ CP18+BP18+WP18 + (1|region), family=binomial, gsdat))
 (m4.ran <- ranef(m4))
+anova(m3, m4)
 
 # Write prediction grids --------------------------------------------------
 gspreds <- stack(m1.pred, m2.pred)
