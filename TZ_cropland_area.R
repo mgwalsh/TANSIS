@@ -66,6 +66,7 @@ write.csv(gsdat, "./Results/TZ_crop_area.csv", row.names = F)
 # cp <-  gsdat[which(gsdat$cp=='Y'), ] ## actual cropland observations only
 summary(m0 <- glm(cbind(ccount, 16-ccount) ~ 1, family=binomial, gsdat)) ## mean model
 (est0 <- cbind(Estimate = coef(m0), confint(m0))) ## standard 95% confidence intervals
+# summary(mq <- glm(cbind(ccount, 16-ccount) ~ 1, family=quasibinomial(link="logit"), gsdat)) ## overdispersed model
 
 # with cropland spatial presence prediction (CP18)
 summary(m1 <- glm(cbind(ccount, 16-ccount) ~ CP18, family=binomial, gsdat)) ## scaling model
