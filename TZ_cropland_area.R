@@ -83,17 +83,17 @@ m2.pred <- predict(grids, m2, type="response")
 (m2.area <- cellStats(m2.pred*6.25, sum)) ## calculates total cropland area (ha)
 plot(m2.pred, axes=F)
 gsdat$m2 <- predict(m2, gsdat, type="response")
-anova(m1, m2)
+anova(m1, m2) ## model comparison
 
 # Multilevel regressions
 # post-stratified by regions
 summary(m3 <- glmer(I(ccount/16) ~ 1 + (1|region), family=binomial, gsdat))
-(m3.ran <- ranef(m3))
+(m3.ran <- ranef(m3)) ## extract random regional effects
 
 # +additional LCC covariates
 summary(m4 <- glmer(I(ccount/16) ~ CP18+BP18+WP18 + (1|region), family=binomial, gsdat))
-(m4.ran <- ranef(m4))
-anova(m3, m4)
+(m4.ran <- ranef(m4)) ## extract random regional effects
+anova(m3, m4) ## model comparison
 
 # Write prediction grids --------------------------------------------------
 gspreds <- stack(m1.pred, m2.pred)
