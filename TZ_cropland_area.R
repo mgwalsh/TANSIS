@@ -71,7 +71,7 @@ summary(m0 <- glm(cbind(ccount, 16-ccount) ~ 1, family=binomial, gsdat)) ## mean
 summary(m1 <- glm(cbind(ccount, 16-ccount) ~ CP18, family=binomial, gsdat)) ## scaling model
 (est1 <- cbind(Estimate = coef(m1), confint(m1))) ## standard 95% confidence intervals
 m1.pred <- predict(grids, m1, type="response")
-m1.area <- cellStats(m1.pred*6.25, sum) ## calculates total cropland area (ha)
+(m1.area <- cellStats(m1.pred*6.25, sum)) ## calculates total cropland area (ha)
 plot(m1.pred, axes=F)
 gsdat$m1 <- predict(m1, gsdat, type="response")
 
