@@ -86,7 +86,7 @@ plot(m2.pred, axes=F)
 gsdat$m2 <- predict(m2, gsdat, type="response")
 anova(m1, m2) ## model comparison
 
-# Multilevel binomial regressions
+# Small area estimates (SAE's)
 # post-stratified by regions
 summary(m3 <- glmer(cbind(ccount, 16-ccount) ~ 1 + (1|region), family=binomial, gsdat))
 
