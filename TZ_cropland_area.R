@@ -34,6 +34,7 @@ download("https://www.dropbox.com/s/ijbsk94cx4wlb5f/TZ_GS_preds.zip?raw=1", "TZ_
 unzip("TZ_GS_preds.zip", overwrite = T)
 glist <- list.files(pattern="tif", full.names = T)
 grids <- stack(glist)
+(gave <- cellStats(grids, mean)) ## calculates mean grids values
 
 # Data setup --------------------------------------------------------------
 # attach GADM-L3 admin unit names from shape
