@@ -96,8 +96,10 @@ anova(m3, m4) ## model comparison
 ran <- ranef(m4) ## extract regional random effects
 ses <- se.coef(m4) ## extract regional standard errors
 nam <- rownames(ran$region)
+sae <- as.data.frame(cbind(ran$region, ses$region)) ## small area estimates
 par(pty="s", mar=c(10,10,1,1))
 coefplot(ran$region[,1], ses$region[,1], varnames=nam, xlim=c(-1,1), CI=2, main="") ## regional coefficient plot
+write.csv(sae, "./Results/TZ_crop_area_sae.csv", row.names = F)
 
 # Write prediction grids --------------------------------------------------
 gspreds <- stack(m1.pred, m2.pred)
