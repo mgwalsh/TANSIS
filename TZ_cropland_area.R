@@ -88,13 +88,14 @@ gsdat$m2 <- predict(m2, gsdat, type="response")
 
 # Small area estimates (SAE's)
 # post-stratified by regions
-summary(m3 <- glmer(cbind(ccount, 16-ccount) ~ 1 + (1|region/district/ward), family=binomial, gsdat))
+summary(m3 <- glmer(cbind(ccount, 16-ccount) ~ 1 + (1|region), family=binomial, gsdat))
+summary(m4 <- glmer(cbind(ccount, 16-ccount) ~ 1 + (1|region/district/ward), family=binomial, gsdat))
 
 # +additional LCC covariates
-summary(m4 <- glmer(cbind(ccount, 16-ccount) ~ CP18+BP18+WP18 + (1|region/district/ward), family=binomial, gsdat))
-anova(m3, m4) ## model comparison
-ran <- ranef(m4) ## extract regional random effects
-ses <- se.coef(m4) ## extract regional standard errors
+summary(m5 <- glmer(cbind(ccount, 16-ccount) ~ CP18+BP18+WP18 + (1|region/district/ward), family=binomial, gsdat))
+anova(m3, m4, m5) ## model comparison
+ran <- ranef(m5) ## extract regional random effects
+ses <- se.coef(m5) ## extract regional standard errors
 nam <- rownames(ran$region)
 sae <- as.data.frame(cbind(ran$region, ses$region)) ## regional-level small area estimates
 colnames(sae) <- c("ran","se")
