@@ -96,7 +96,7 @@ anova(m3, m4) ## model comparison
 ran <- ranef(m4) ## extract regional random effects
 ses <- se.coef(m4) ## extract regional standard errors
 nam <- rownames(ran$region)
-sae <- as.data.frame(cbind(ran$region, ses$region)) ## small area estimates
+sae <- as.data.frame(cbind(ran$region, ses$region)) ## regional-level small area estimates
 colnames(sae) <- c("ran","se")
 par(pty="s", mar=c(10,10,1,1))
 coefplot(ran$region[,1], ses$region[,1], varnames=nam, xlim=c(-1.5,1.5), CI=2, main="") ## regional coefficient plot
