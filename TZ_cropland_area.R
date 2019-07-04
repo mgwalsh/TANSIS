@@ -1,4 +1,4 @@
-# Tanzania 2018 GeoSurvey 250m cropland area predictions
+# Tanzania 2019 GeoSurvey 250m cropland area predictions
 # M. Walsh, June 2019
 
 # Required packages
