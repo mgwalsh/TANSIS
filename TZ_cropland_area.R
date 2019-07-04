@@ -85,7 +85,6 @@ m2.pred <- predict(grids, m2, type="response")
 (m2.area <- cellStats(m2.pred*6.25, sum)) ## calculates total cropland area (ha)
 plot(m2.pred, axes=F)
 gsdat$m2 <- predict(m2, gsdat, type="response")
-anova(m1, m2) ## model comparison
 
 # Small area estimates (SAE's)
 # post-stratified by regions
