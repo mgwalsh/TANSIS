@@ -92,7 +92,7 @@ summary(m3 <- glmer(cbind(ccount, 16-ccount) ~ 1 + (1|region), family=binomial, 
 summary(m4 <- glmer(cbind(ccount, 16-ccount) ~ 1 + (1|region/district/ward), family=binomial, gsdat))
 
 # +additional LCC covariates
-summary(m5 <- glmer(cbind(ccount, 16-ccount) ~ CP18+BP18+WP18 + (1|region/district/ward), family=binomial, gsdat))
+summary(m5 <- glmer(cbind(ccount, 16-ccount) ~ CP18+BP18+WP18 + (1|region), family=binomial, gsdat))
 anova(m3, m4, m5) ## model comparison
 ran <- ranef(m5) ## extract regional random effects
 ses <- se.coef(m5) ## extract regional standard errors
